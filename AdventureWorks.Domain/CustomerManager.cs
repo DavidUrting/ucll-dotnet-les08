@@ -64,12 +64,52 @@ namespace AdventureWorks.Domain
 
         public Customer InsertCustomer(Customer customer)
         {
-            return customer;
+            using (var dbContext = new Entities.AdventureWorks2017Context())
+            {
+                // Omvormen 'domein' object naar 'entity' object(en).
+                // Een customer aanmaken komt neer op het opvullen van 3 tabellen!
+                Entities.Customer customerEntity = new Entities.Customer();
+                customerEntity.Person = new Entities.Person()
+                {
+                    PersonType = "IN", // https://www.sqldatadictionary.com/AdventureWorks2014/Person.Person.html
+                    FirstName = customer.FirstName,
+                    LastName = customer.LastName
+                };
+                customerEntity.Person.BusinessEntity = new Entities.BusinessEntity()
+                {
+                };
+                customerEntity.Person.EmailAddress.Add(new Entities.EmailAddress()
+                {
+                    EmailAddress1 = customer.Email
+                });
+
+                // Toevoegen aan DbContext
+                dbContext.Add(customerEntity);
+
+                // Wegschrijven naar database
+                dbContext.SaveChanges();
+
+                // Toegekende ID (door database) in domein object kopiëren.
+                customer.Id = customerEntity.CustomerId;
+                return customer;
+            }
         }
 
         public Customer UpdateCustomer(Customer customer)
         {
-            return customer;
+            using (var dbContext = new Entities.AdventureWorks2017Context())
+            {
+                var customerEntity = dbContext.Customer
+                        .Include(c => c.Person)
+                        .Include(c => c.Person.EmailAddress)
+                        .Select(c => c.CustomerId == customer.Id);
+
+                // AttachdbContext.Customer.Attach(customerEntity);
+                //dbContext.Entry(customerEntity.Person).Property(p => p.LastName).IsModified = true;
+                //dbContext.SaveChanges();
+
+                return customer;
+            }
         }
 
         public void DeleteCustomer(int id)
