@@ -61,5 +61,19 @@ namespace AdventureWorks.Domain
             }
             return null;
         }
+
+        public Customer InsertCustomer(Customer customer)
+        {
+            return customer;
+        }
+
+        public Customer UpdateCustomer(Customer customer)
+        {
+            return customer;
+        }
+
+        public void DeleteCustomer(int id)
+        {
+        }
     }
 }

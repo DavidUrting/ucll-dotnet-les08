@@ -1,5 +1,6 @@
 using AdventureWorks.Domain.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 
 namespace AdventureWorks.Domain.Test
@@ -34,6 +35,75 @@ namespace AdventureWorks.Domain.Test
             // ASSERT
             Assert.IsNotNull(customers);
             Assert.IsTrue(customers.Count > 0);
-        } 
+        }
+
+        [TestMethod]
+        public void TestInsertCustomer()
+        {
+            // ARRANGE
+            CustomerManager cm = new CustomerManager();
+            Customer customerToInsert = new Customer()
+            { 
+                FirstName = "Test",
+                LastName = Guid.NewGuid().ToString(),
+                Email = "test@test.com"
+            };
+
+            // ACT
+            Customer insertedCustomer = cm.InsertCustomer(customerToInsert);
+
+            // ASSERT
+            Assert.IsNotNull(insertedCustomer);
+            Assert.IsTrue(insertedCustomer.Id >= 0);
+            Customer retrievedCustomer = cm.GetCustomer(insertedCustomer.Id);
+            Assert.AreEqual(customerToInsert.LastName, retrievedCustomer.LastName);
+        }
+
+        [TestMethod]
+        public void TestUpdateCustomer()
+        {
+            // ARRANGE
+            CustomerManager cm = new CustomerManager();
+            Customer customerToInsert = new Customer()
+            {
+                FirstName = "Test",
+                LastName = Guid.NewGuid().ToString(),
+                Email = "test@test.com"
+            };
+            Customer insertedCustomer = cm.InsertCustomer(customerToInsert);
+
+            // ACT
+            Customer customerToUpdate = cm.GetCustomer(insertedCustomer.Id);
+            customerToUpdate.Email = "test-UPDATED@test.com";
+            Customer updatedCustomer = cm.UpdateCustomer(customerToUpdate);
+
+            // ASSERT
+            Assert.IsNotNull(updatedCustomer);
+            Assert.AreEqual(customerToUpdate.Id, updatedCustomer.Id);
+            Assert.AreEqual("test-UPDATED@test.com", updatedCustomer.Email);
+            Customer retrievedCustomer = cm.GetCustomer(updatedCustomer.Id);
+            Assert.AreEqual("test-UPDATED@test.com", retrievedCustomer.LastName);
+        }
+
+        [TestMethod]
+        public void TestDeleteCustomer()
+        {
+            // ARRANGE
+            CustomerManager cm = new CustomerManager();
+            Customer customerToInsert = new Customer()
+            {
+                FirstName = "Test",
+                LastName = Guid.NewGuid().ToString(),
+                Email = "test@test.com"
+            };
+            Customer insertedCustomer = cm.InsertCustomer(customerToInsert);
+
+            // ACT
+            cm.DeleteCustomer(insertedCustomer.Id);
+
+            // ASSERT
+            Customer retrievedCustomer = cm.GetCustomer(insertedCustomer.Id);
+            Assert.IsNull(retrievedCustomer);
+        }
     }
 }
