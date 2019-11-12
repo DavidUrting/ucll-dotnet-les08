@@ -12,6 +12,7 @@ namespace AdventureWorks.Web.Controllers
 {
     public class CustomerController : Controller
     {
+        [Route("zoeken")]
         public IActionResult Search()
         {
             SearchViewModel vm = new SearchViewModel();
