@@ -82,7 +82,7 @@ namespace AdventureWorks.Domain.Test
             Assert.AreEqual(customerToUpdate.Id, updatedCustomer.Id);
             Assert.AreEqual("test-UPDATED@test.com", updatedCustomer.Email);
             Customer retrievedCustomer = cm.GetCustomer(updatedCustomer.Id);
-            Assert.AreEqual("test-UPDATED@test.com", retrievedCustomer.LastName);
+            Assert.AreEqual("test-UPDATED@test.com", retrievedCustomer.Email);
         }
 
         [TestMethod]

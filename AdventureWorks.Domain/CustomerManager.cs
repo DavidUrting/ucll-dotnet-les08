@@ -102,11 +102,14 @@ namespace AdventureWorks.Domain
                 var customerEntity = dbContext.Customer
                         .Include(c => c.Person)
                         .Include(c => c.Person.EmailAddress)
-                        .Select(c => c.CustomerId == customer.Id);
+                        .Where(c => c.CustomerId == customer.Id)
+                        .FirstOrDefault();
 
-                // AttachdbContext.Customer.Attach(customerEntity);
-                //dbContext.Entry(customerEntity.Person).Property(p => p.LastName).IsModified = true;
-                //dbContext.SaveChanges();
+                customerEntity.Person.FirstName = customer.FirstName;
+                customerEntity.Person.LastName = customer.LastName;
+                customerEntity.Person.EmailAddress.First().EmailAddress1 = customer.Email;
+
+                dbContext.SaveChanges();
 
                 return customer;
             }
@@ -114,6 +117,23 @@ namespace AdventureWorks.Domain
 
         public void DeleteCustomer(int id)
         {
+            using (var dbContext = new Entities.AdventureWorks2017Context())
+            {
+                var customerEntity = dbContext.Customer
+                        .Include(c => c.Person)
+                        .Include(c => c.Person.EmailAddress)
+                        .Where(c => c.CustomerId == id)
+                        .FirstOrDefault();
+
+                foreach (Entities.EmailAddress ea in customerEntity.Person.EmailAddress)
+                {
+                    dbContext.EmailAddress.Remove(ea);
+                }
+                dbContext.Person.Remove(customerEntity.Person);
+                dbContext.Customer.Remove(customerEntity);
+
+                dbContext.SaveChanges();
+            }
         }
     }
 }
