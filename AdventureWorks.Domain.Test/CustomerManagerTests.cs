@@ -105,5 +105,15 @@ namespace AdventureWorks.Domain.Test
             Customer retrievedCustomer = cm.GetCustomer(insertedCustomer.Id);
             Assert.IsNull(retrievedCustomer);
         }
+
+        [ClassCleanup]
+        public static void CleanTestData()
+        {
+            CustomerManager cm = new CustomerManager();
+            foreach (Customer testCustomer in cm.SearchCustomers("Test"))
+            {
+                cm.DeleteCustomer(testCustomer.Id);
+            }
+        }
     }
 }
