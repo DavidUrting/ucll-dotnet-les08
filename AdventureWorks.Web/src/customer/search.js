@@ -12,7 +12,7 @@
                     '</td><td>' + result[i].firstName +
                     '</td><td>' + result[i].lastName +
                     '</td><td>' + result[i].email +
-                    '</td><td><a href="/customer/details/' + result[i].id + '">Details</a></td></tr>');
+                    '</td><td><a href="/customer/details/' + result[i].id + '">Details</a> | <a href="/customer/edit/' + result[i].id + '">Edit</a> | <a href="/customer/delete/' + result[i].id + '">Delete</a></td></tr>');
             }
         });
     }

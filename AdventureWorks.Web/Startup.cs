@@ -25,7 +25,7 @@ namespace AdventureWorks.Web
         {
             services.AddControllersWithViews();
 
-            services.AddTransient<ICustomerManager, DummyCustomerManager>();
+            services.AddTransient<ICustomerManager, CustomerManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
