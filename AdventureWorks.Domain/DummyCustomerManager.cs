@@ -6,9 +6,9 @@ namespace AdventureWorks.Domain
 {
     public class DummyCustomerManager : ICustomerManager
     {
-        private List<Customer> _dummyData = new List<Customer>();
+        private static List<Customer> _dummyData = new List<Customer>();
 
-        public DummyCustomerManager()
+        static DummyCustomerManager()
         {
             _dummyData.Add(new Customer() { Id = 1, FirstName = "Dummy1", LastName = "Dummy1", Email = "dummy1@example.com" });
             _dummyData.Add(new Customer() { Id = 2, FirstName = "Dummy2", LastName = "Dummy2", Email = "dummy2@example.com" });
@@ -29,17 +29,23 @@ namespace AdventureWorks.Domain
 
         public Customer InsertCustomer(Customer customer)
         {
-            throw new System.NotImplementedException();
+            customer.Id = _dummyData.Select(c => c.Id).Max() + 1;
+            _dummyData.Add(customer);
+            return customer;
         }
 
         public Customer UpdateCustomer(Customer customer)
         {
-            throw new System.NotImplementedException();
+            Customer storedCustomer = _dummyData.Where(c =>  c.Id == customer.Id).FirstOrDefault();
+            storedCustomer.FirstName = customer.FirstName;
+            storedCustomer.LastName = customer.LastName;
+            storedCustomer.Email = customer.Email;
+            return storedCustomer;
         }
 
         public void DeleteCustomer(int id)
         {
-            throw new System.NotImplementedException();
+            _dummyData = _dummyData.Where(c => c.Id != id).ToList();
         }
     }
 }
