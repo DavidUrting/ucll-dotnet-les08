@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AdventureWorks.Domain;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -23,6 +24,8 @@ namespace AdventureWorks.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            services.AddTransient<ICustomerManager, DummyCustomerManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

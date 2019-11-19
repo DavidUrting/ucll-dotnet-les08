@@ -12,6 +12,13 @@ namespace AdventureWorks.Web.Controllers
 {
     public class CustomerController : Controller
     {
+        private ICustomerManager _manager;
+
+        public CustomerController(ICustomerManager manager)
+        {
+            _manager = manager;
+        }
+
         [Route("zoeken")]
         public IActionResult Search()
         {
@@ -22,8 +29,7 @@ namespace AdventureWorks.Web.Controllers
         [HttpPost]
         public IActionResult Search(string keyword)
         {
-            CustomerManager cm = new CustomerManager();
-            var customers = cm.SearchCustomers(keyword)
+            var customers = _manager.SearchCustomers(keyword)
                 .Select(c => new CustomerViewModel()
                 {
                     Id = c.Id,
@@ -37,8 +43,7 @@ namespace AdventureWorks.Web.Controllers
         // Tonen van details van een klant
         public IActionResult Details(int id)
         {
-            CustomerManager cm = new CustomerManager();
-            Customer c = cm.GetCustomer(id);
+            Customer c = _manager.GetCustomer(id);
             if (c != null)
             {
                 CustomerViewModel vm = new CustomerViewModel()
@@ -52,6 +57,5 @@ namespace AdventureWorks.Web.Controllers
             }
             else return NotFound();
         }
-
     }
 }

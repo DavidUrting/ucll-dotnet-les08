@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace AdventureWorks.Domain
 {
-    public class CustomerManager
+    public class CustomerManager: ICustomerManager
     {
         public IList<Customer> SearchCustomers(string keyword)
         {
