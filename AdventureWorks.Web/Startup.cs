@@ -47,6 +47,11 @@ namespace AdventureWorks.Web
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                //Alternatief voor oefening 8.2: convention-based routing
+                //endpoints.MapControllerRoute(
+                //    name: "zoeken",
+                //    pattern: "zoeken",
+                //    defaults: new { controller = "Customer", action = "Search" });
             });
         }
     }
