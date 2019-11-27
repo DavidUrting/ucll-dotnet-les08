@@ -5,7 +5,7 @@
     // keyword achterhalen. Indien leeg: geen query doen.
     let keyword = document.getElementById("keywordInput").value;
     if (keyword) {
-        $.post("/customer/search?keyword=" + keyword, function (result) {
+        $.post("/zoeken?keyword=" + keyword, function (result) {
             for (let i = 0; i < result.length; i++) {
                 $("#customers").find('tbody').append(
                     '<tr><td>' + result[i].id +
